@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <!--Nav bar at the top of the screen-->
+    <nav class="navbar navbar-dark bg-success" style="margin-bottom: 30px">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="nav navbar-nav">
+                        <a class="nav-item nav-link" href="settings_modal" data-toggle="modal" data-target="#settings_modal"><i class="fa fa-lg fa-cog"></i></a>
+                        <span class="nav-link" style="position: absolute;left: calc(50% - 42px);">Oberlin College</span>
+                        <a class="nav-item nav-link pull-xs-right" href="#"><i class="fa fa-lg fa-info-circle"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container for the page -->
+    <div class="container">
+
+        <!-- Outermost accordion for Orbs, Buildings and other catagories -->
+        <div id="outer-accordion" role="tablist" aria-multiselectable="true">
+
+            {{#if settings.orbs}}
+                <!-- Panel for orbs -->
+                <div class="panel panel-default">
+
+                    <!-- Panel Header -->
+                    <div class="panel-heading" role="tab" id="orbs" style="background: #eceeef;padding: 10px">
+                        <h3 class="panel-title" style="display: inline">
+                                <a data-toggle="collapse" data-parent="#outer-accordion" href="#orbs-panel" aria-expanded="true" aria-controls="orbs-panel" style="color: #333">
+                                    Orbs
+                                </a>
+                            </h3>
+                        <form class="form-inline pull-xs-right" style="display: inline;">
+                            <div class="form-group">
+                                <select class="c-select">
+                                    <option selected>Sort By</option>
+                                    <option value="Alphabetical">Alphabetical</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="panel-body">
+                        <div id="orbs-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="orbs">
+                            {{#each orbs}}
+                                <div class="panel-heading" role="tab" style="background: #eceeef;padding: 7px">
+                                    <form method="post" action="/" class="form-inline">
+                                        <h4 class="panel-title" style="display: inline;font-size: 20px;">
+                                                                    <a data-toggle="collapse" href="#orbs-panel{{@index}}" aria-expanded="true" aria-controls="orbs-panel{{@index}}" style="color: #333;font-size: 20px; display:inline">
+                                                                        {{this.name}}
+                                                                    </a></h4>
+                                        <button value="{{this.name}}" type="submit" name="delete" class="btn btn-danger btn-sm pull-xs-right">Delete</button>
+                                    </form>
+                                </div>
+                                <div class="panel-body" style="margin: 4px;padding: 4px">
+                                    <div id="orbs-panel{{@index}}" class="panel-collapse collapse" role="tabpanel">
+                                        Meter One: {{this.meter_one}}, Meter Two: {{this.meter_two}}
+                                    </div>
+                                </div>
+                            {{/each}}
+
+                            <p><a class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#form_orbs"> Add new </a></p>
+                            <!-- Form to save -->
+                            <div class="collapse" id="form_orbs">
+                                <form class="form-inline" method="post" action="/">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="meter_one">Meter One</label>
+                                        <input type="text" class="form-control" name="meter_one">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="meter_two">Meter Two</label>
+                                        <input type="text" class="form-control" name="meter_two">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="selector_id">Selector ID</label>
+                                        <input type="text" class="form-control" name="selector_id">
+                                    </div>
+                                    <input type="submit" class="btn btn-success" value="Save Orb">
+                                    <!-- <input type="submit"> -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if settings.buildings}}
+                <!-- Panel for buildings -->
+                <div class="panel panel-default">
+
+                    <!-- Panel Header -->
+                    <div class="panel-heading" role="tab" id="buildings" style="background: #eceeef;padding: 10px">
+                        <h3 class="panel-title" style="display: inline">
+                                <a data-toggle="collapse" data-parent="#outer-accordion" href="#buildings-panel" aria-expanded="true" aria-controls="buildings-panel" style="color: #333">
+                                    Buildings
+                                </a>
+                            </h3>
+                        <form class="form-inline pull-xs-right" style="display: inline;">
+                            <div class="form-group">
+                                <select class="c-select">
+                                    <option selected>Sort By</option>
+                                    <option value="Alphabetical">Alphabetical</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="panel-body">
+                        <div id="buildings-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="buildings">
+                            {{#each buildings}}
+                                <div class="panel-heading" role="tab" style="background: #eceeef;padding: 7px">
+                                    <form method="post" action="/" class="form-inline">
+                                        <h4 class="panel-title" style="display: inline;font-size: 20px;">
+                                                                    <a data-toggle="collapse" href="#buildings-panel{{@index}}" aria-expanded="true" aria-controls="buildings-panel{{@index}}" style="color: #333;font-size: 20px; display:inline">
+                                                                        {{this.name}}
+                                                                    </a></h4>
+                                        <button value="{{this.name}}" type="submit" name="delete" class="btn btn-danger btn-sm pull-xs-right">Delete</button>
+                                    </form>
+                                </div>
+                                <div class="panel-body" style="margin: 4px;padding: 4px">
+                                    <div id="buildings-panel{{@index}}" class="panel-collapse collapse" role="tabpanel">
+                                        Orb One: {{this.orb_one}}, Orb Two: {{this.orb_two}}
+                                    </div>
+                                </div>
+                            {{/each}}
+
+                            <p><a class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#form_buildings"> Add new </a></p>
+                            <!-- Form to save -->
+                            <div class="collapse" id="form_buildings">
+                                <form class="form-inline" method="post" action="/">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orb_one">Orb One</label>
+                                        <input type="text" class="form-control" name="orb_one">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orb_two">Orb Two</label>
+                                        <input type="text" class="form-control" name="orb_two">
+                                    </div>
+                                    <!-- <div class="form-group">
+                                    <label for="selector_id">Selector ID</label>
+                                    <input type="text" class="form-control" name="selector_id">
+                                </div> -->
+                                    <input type="submit" class="btn btn-success" value="Save Building">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+
+            {{#if settings.floors}}
+                <!-- Panel for floors -->
+                <div class="panel panel-default">
+
+                    <!-- Panel Header -->
+                    <div class="panel-heading" role="tab" id="floors" style="background: #eceeef;padding: 10px">
+                        <h3 class="panel-title" style="display: inline">
+                                <a data-toggle="collapse" data-parent="#outer-accordion" href="#floors-panel" aria-expanded="true" aria-controls="floors-panel" style="color: #333">
+                                    Floors
+                                </a>
+                            </h3>
+                        <form class="form-inline pull-xs-right" style="display: inline;">
+                            <div class="form-group">
+                                <select class="c-select">
+                                    <option selected>Sort By</option>
+                                    <option value="Alphabetical">Alphabetical</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="panel-body">
+                        <div id="floors-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="floors">
+                            {{#each floors}}
+                                <div class="panel-heading" role="tab" style="background: #eceeef;padding: 7px">
+                                    <form method="post" action="/" class="form-inline">
+                                        <h4 class="panel-title" style="display: inline;font-size: 20px;">
+                                                                    <a data-toggle="collapse" href="#floors-panel{{@index}}" aria-expanded="true" aria-controls="floors-panel{{@index}}" style="color: #333;font-size: 20px; display:inline">
+                                                                        {{this.name}}
+                                                                    </a></h4>
+                                        <button value="{{this.name}}" type="submit" name="delete" class="btn btn-danger btn-sm pull-xs-right">Delete</button>
+                                    </form>
+                                </div>
+                                <div class="panel-body" style="margin: 4px;padding: 4px">
+                                    <div id="floors-panel{{@index}}" class="panel-collapse collapse" role="tabpanel">
+                                        Orb One: {{this.orb_one}}, Orb Two: {{this.orb_two}}
+                                    </div>
+                                </div>
+                            {{/each}}
+
+                            <p><a class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#form_floors"> Add new </a></p>
+                            <!-- Form to save -->
+                            <div class="collapse" id="form_floors">
+                                <form class="form-inline" method="post" action="/">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orb_one">Orb One</label>
+                                        <input type="text" class="form-control" name="orb_one">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="orb_two">Orb Two</label>
+                                        <input type="text" class="form-control" name="orb_two">
+                                    </div>
+                                    <!-- <div class="form-group">
+                                    <label for="selector_id">Selector ID</label>
+                                    <input type="text" class="form-control" name="selector_id">
+                                </div> -->
+                                    <input type="submit" class="btn btn-success" value="Save Floors">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+
+        </div>
+    </div>
+</body>
+
+<!-- Settings modal -->
+<div id="settings_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Settings</h4>
+            </div>
+            <form class="form" method="post" action="/">
+                <!-- Body -->
+                <div class="modal-body">
+                    <div class="checkbox">
+                        <label>
+                            {{#if settings.orbs}}
+                                <input type="checkbox" checked name="orbs" value="false"> Show Orbs Panel
+                            {{else}}
+                                <input type="checkbox" name="orbs" value="true"> Show Orbs Panel
+                            {{/if}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            {{#if settings.buildings}}
+                                <input type="checkbox" checked name="buildings" value="false"> Show Buildings Panel
+                            {{else}}
+                                <input type="checkbox" name="buildings" value="true"> Show Buildings Panel
+                            {{/if}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            {{#if settings.floors}}
+                                <input type="checkbox" checked name="floors" value="false"> Show Floors Panel
+                            {{else}}
+                                <input type="checkbox" name="floors" value="true"> Show Floors Panel
+                            {{/if}}
+                        </label>
+                    </div>
+                </div>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" value="Save Settings" name="settings">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>

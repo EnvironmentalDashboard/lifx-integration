@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<a class="nav-item nav-link" href="settings_modal" data-toggle="modal" data-target="#settings_modal"><i class="fa fa-lg fa-cog"></i></a>
+
+<!-- Modal -->
+<div id="settings_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Settings</h4>
+            </div>
+            <!-- Body -->
+            <div class="modal-body">
+                <div class="checkbox">
+                    <label>
+                        {{#if this.orbs}}
+                            <input type="checkbox" checked> Show Orbs Panel
+                        {{else}}
+                            <input type="checkbox"> Show Orbs Panel
+                        {{/if}}
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{#if this.buildings}}
+                            <input type="checkbox" checked> Show Buildings Panel
+                        {{else}}
+                            <input type="checkbox"> Show Buildings Panel
+                        {{/if}}
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {{#if this.floors}}
+                            <input type="checkbox" checked> Show Floors Panel
+                        {{else}}
+                            <input type="checkbox"> Show Floors Panel
+                        {{/if}}
+                    </label>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-success" value="Save Settings">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
