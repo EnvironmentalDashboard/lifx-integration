@@ -8,9 +8,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="nav navbar-nav">
+                    <div class="nav navbar-nav" style="text-align: center">
                         <a class="nav-item nav-link" href="settings_modal" data-toggle="modal" data-target="#settings_modal"><i class="fa fa-lg fa-cog"></i></a>
-                        <span class="nav-link" style="position: absolute;left: calc(50% - 42px);">Oberlin College</span>
+                        <span class="nav-link" style="display: inline-block">Oberlin College</span>
                         <a class="nav-item nav-link pull-xs-right" href="#"><i class="fa fa-lg fa-info-circle"></i></a>
                     </div>
                 </div>
@@ -51,8 +51,8 @@
                     <div class="panel-body">
                         <div id="orbs-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="orbs">
                             {{#each orbs}}
-                                <div class="panel-heading" role="tab" style="background: #eceeef;padding: 7px">
-                                    <form method="post" action="/" class="form-inline">
+                                <div class="panel-heading" role="tab" style="background: #eceeef;padding: 7px;">
+                                    <form method="post" action="/delete_orb" class="form-inline">
                                         <h4 class="panel-title" style="display: inline;font-size: 20px;">
                                                                     <a data-toggle="collapse" href="#orbs-panel{{@index}}" aria-expanded="true" aria-controls="orbs-panel{{@index}}" style="color: #333;font-size: 20px; display:inline">
                                                                         {{this.name}}
@@ -70,25 +70,29 @@
                             <p><a class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#form_orbs"> Add new </a></p>
                             <!-- Form to save -->
                             <div class="collapse" id="form_orbs">
-                                <form class="form-inline" method="post" action="/">
+                                <form class="form-inline" method="post" action="/building_picked">
+                                    <select style="width:120px;">
+                                        {{#buildings}}
+                                            <option value="{{this.name}}">{{this.name}}</option>
+                                        {{/buildings}}
+                                    </select>
+                                </form>
+                                <form class="form-inline" method="post" action="/save_orb">
                                     <div class="form-group">
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control" name="name">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="meter_one">Meter One</label>
-                                        <input type="text" class="form-control" name="meter_one">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="meter_two">Meter Two</label>
-                                        <input type="text" class="form-control" name="meter_two">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="selector_id">Selector ID</label>
-                                        <input type="text" class="form-control" name="selector_id">
-                                    </div>
+                                    <select style="width:120px;">
+                                        {{#meters}}
+                                            <option value="{{this.name}}">{{this.name}}</option>
+                                        {{/meters}}
+                                    </select>
+                                    <select style="width:120px;">
+                                        {{#meters}}
+                                            <option value="{{this.name}}">{{this.name}}</option>
+                                        {{/meters}}
+                                    </select>
                                     <input type="submit" class="btn btn-success" value="Save Orb">
-                                    <!-- <input type="submit"> -->
                                 </form>
                             </div>
                         </div>
@@ -143,23 +147,10 @@
                             <!-- Form to save -->
                             <div class="collapse" id="form_buildings">
                                 <form class="form-inline" method="post" action="/">
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control" name="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="orb_one">Orb One</label>
-                                        <input type="text" class="form-control" name="orb_one">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="orb_two">Orb Two</label>
-                                        <input type="text" class="form-control" name="orb_two">
-                                    </div>
-                                    <!-- <div class="form-group">
-                                    <label for="selector_id">Selector ID</label>
-                                    <input type="text" class="form-control" name="selector_id">
-                                </div> -->
+                                    <label for="orb_list">Orb List</label>
+                                    <textarea rows="2" type="text" class="form-control" name="orb_list" style="width:70%"> </textarea>
                                     <input type="submit" class="btn btn-success" value="Save Building">
+
                                 </form>
                             </div>
                         </div>
@@ -214,22 +205,8 @@
                             <!-- Form to save -->
                             <div class="collapse" id="form_floors">
                                 <form class="form-inline" method="post" action="/">
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control" name="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="orb_one">Orb One</label>
-                                        <input type="text" class="form-control" name="orb_one">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="orb_two">Orb Two</label>
-                                        <input type="text" class="form-control" name="orb_two">
-                                    </div>
-                                    <!-- <div class="form-group">
-                                    <label for="selector_id">Selector ID</label>
-                                    <input type="text" class="form-control" name="selector_id">
-                                </div> -->
+                                    <label for="orb_list">Orb List</label>
+                                    <textarea rows="2" type="text" class="form-control" name="orb_list" style="width:70%"> </textarea>
                                     <input type="submit" class="btn btn-success" value="Save Floors">
                                 </form>
                             </div>
