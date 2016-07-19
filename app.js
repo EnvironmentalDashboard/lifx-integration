@@ -7,16 +7,29 @@ var express = require("express"),
     mysql = require("mysql"),
     bodyParser = require('body-parser'),
     http = require('http'),
+    https = require('https'),
+    rest = require('restler'),
+    needle = require('needle'),
+    querystring = require("querystring"),
     fs = require('fs'),
     api = require("./api.js"),
-    port = 3000,
-    app = express();
+    port = 3000
 
 //---------------------App---------------------//
-app.listen(port, (err) => {
-    if (err) return console.log('Something went wrong: ' + err);
-    console.log(`Server is listening on ${port}.`);
-});
+app = express();
+
+var logger = function(req, res, next) {
+    //console.log(req.url+"    " + req.query.code + "    " + req.query.state);
+    next(); 
+}
+
+var ssl_options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+
+https.createServer(ssl_options,app, function (req, res) {}).listen(443);
+http.createServer(app, function (req, res) {}).listen(80);
 
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
@@ -27,10 +40,9 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(logger); 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //-------------Functions and Data--------------//
@@ -101,11 +113,9 @@ var save_settings = function(params) {
     data.settings = set;
 };
 //----------Routing----------//
+
 app.get('/', (request, response) => {
     response.render('home', data);
-});
-
-app.post('/', (request, response) => {
 });
 
 app.post('/save_orb', (request, response) => {
@@ -124,33 +134,42 @@ app.get('/test', (request, response) => {
     response.render('test');
 });
 
-app.get('/auth', function (req, res) {
-    var querystring = require("querystring");
-    var result = querystring.stringify({client_id: "b1fa18a42a9b5fb0a27cb525d3283066aebf86284e6b08640faccafc133336f0",scope: "remote_control:all",state:"3(#0/!~",response_type:"code"});
-    console.log(result);
-    res.redirect("https://cloud.lifx.com/oauth/authorize?"+result);
+app.get('/redirect', (request, response) => {
+    var code  = request.query.code;
+    var state = request.query.state;	
+    var params = {
+        client_id: 'b1fa18a42a9b5fb0a27cb525d3283066aebf86284e6b08640faccafc133336f0',
+        client_secret: '45daebf2070721410815e0b2e054d16c195bac1c1cdfa5e2ad438d3b35888af5',
+	code: code,
+	grant_type: 'authorization_code'
+    };
+
+    needle.post('https://cloud.lifx.com/oauth/token', params, function(err, resp) {
+        data.settings.user_token = resp.body.access_token;
+	console.log(data.settings.user_token);
+        var headers = {
+            'authorization': 'Bearer ' + data.settings.user_token 
+         };
+	needle.request('get','https://api.lifx.com/v1beta1/lights/all',  function(error, response) {
+            console.log(response);
+	    if (!error && response.statusCode == 200)
+		console.log(response.body);
+	    }); 
+    });
+    response.redirect('/');
 });
 
-// app.get('/redirect', function (req, res) {
-//   var code = req.query.code;
-//   console.log(code);
-//   oauth2.authCode.getToken({
-//     code: code,
-//     redirect_uri: 'http://environmentalorb.org/redirect'
-//   }, saveToken);
-//
-//   function saveToken(error, result) {
-//     if (error) { console.log('Access Token Error', error.message); }
-//     token = oauth2.accessToken.create(result);
-//   }
-// });
+app.get('/auth', function (req, res) {
+    var result = querystring.stringify({client_id: "b1fa18a42a9b5fb0a27cb525d3283066aebf86284e6b08640faccafc133336f0",scope: "remote_control:all",state:"3(#0/!~",response_type:"code"});
+    res.redirect("https://cloud.lifx.com/oauth/authorize?"+result);
+});
 
 //--------------------MySQL--------------------//
 var con = mysql.createConnection({
     host: "localhost",
-    port: 8889,
+    port: 3306,
     user: "root",
-    password: "root",
+    password: "npbk47e",
     database: "lifx_app"
 });
 
@@ -207,7 +226,3 @@ var authorization_uri = oauth2.authCode.authorizeURL({
 });
 
 //con.end(function(err) {});
-
-//--------------------Other--------------------//
-// args = [api.getBuildings, api.filterBuildings];
-// api.getToken.apply(this, args);
