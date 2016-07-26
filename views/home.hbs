@@ -24,7 +24,6 @@
         <!-- Outermost accordion for Orbs, Buildings and other catagories -->
         <div id="outer-accordion" role="tablist" aria-multiselectable="true">
 
-            {{#if settings.orbs}}
                 <!-- Panel for orbs -->
                 <div class="panel panel-default">
 
@@ -78,18 +77,16 @@
                                     </select>
                                 </form>
                                 <form class="form-inline" method="post" action="/save_orb">
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control" name="name">
-                                    </div>
-                                    <select style="width:120px;">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name">
+                                    <select name="meter_one" style="width:120px;">
                                         {{#meters}}
-                                            <option value="{{this.name}}">{{this.name}}</option>
+                                            <option value="{{this.url}}">{{this.name}}</option>
                                         {{/meters}}
                                     </select>
-                                    <select style="width:120px;">
+                                    <select name="meter_two" style="width:120px;">
                                         {{#meters}}
-                                            <option value="{{this.name}}">{{this.name}}</option>
+                                            <option value="{{this.url}}">{{this.name}}</option>
                                         {{/meters}}
                                     </select>
                                     <input type="submit" class="btn btn-success" value="Save Orb">
@@ -98,7 +95,6 @@
                         </div>
                     </div>
                 </div>
-            {{/if}}
 
             {{#if settings.buildings}}
                 <!-- Panel for buildings -->
